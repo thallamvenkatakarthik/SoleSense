@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pressure Monitor</string>
+    <string name="title_activity_main">Pressure Monitor</string>
+    <string name="package_name">com.pressuremonitor.app</string>
+    <string name="custom_url_scheme">com.pressuremonitor.app</string>
+</resources>

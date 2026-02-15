@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 195 30% 97%;
+    --foreground: 200 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 25% 15%;
+
+    --primary: 174 62% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 195 25% 93%;
+    --secondary-foreground: 200 25% 20%;
+
+    --muted: 195 20% 94%;
+    --muted-foreground: 200 10% 50%;
+
+    --accent: 174 40% 90%;
+    --accent-foreground: 174 62% 28%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 195 20% 90%;
+    --input: 195 20% 90%;
+    --ring: 174 62% 38%;
+
+    --radius: 1rem;
+
+    /* Custom medical tokens */
+    --safe: 152 60% 42%;
+    --safe-foreground: 0 0% 100%;
+    --safe-bg: 152 50% 94%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-bg: 38 80% 94%;
+
+    --danger: 0 72% 55%;
+    --danger-foreground: 0 0% 100%;
+    --danger-bg: 0 60% 95%;
+
+    --metric-card: 0 0% 100%;
+    --metric-card-border: 195 20% 92%;
+
+    --nav-bg: 0 0% 100%;
+    --nav-border: 195 20% 92%;
+    --nav-active: 174 62% 38%;
+    --nav-inactive: 200 10% 60%;
+
+    --heatmap-low: 174 50% 85%;
+    --heatmap-mid: 38 80% 65%;
+    --heatmap-high: 0 72% 55%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 200 25% 8%;
+    --foreground: 195 20% 95%;
+    --card: 200 20% 12%;
+    --card-foreground: 195 20% 95%;
+    --popover: 200 20% 12%;
+    --popover-foreground: 195 20% 95%;
+    --primary: 174 62% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 15% 18%;
+    --secondary-foreground: 195 20% 90%;
+    --muted: 200 15% 18%;
+    --muted-foreground: 200 10% 55%;
+    --accent: 174 30% 20%;
+    --accent-foreground: 174 62% 65%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 200 15% 20%;
+    --input: 200 15% 20%;
+    --ring: 174 62% 45%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+@layer utilities {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
