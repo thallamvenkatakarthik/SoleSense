@@ -68,18 +68,23 @@ export function useBLE(): UseBLEReturn {
 
     setStatusLocal("scanning");
     try {
+      console.log("[BLE Hook] Starting pairing...");
       const info = await requestDevice(options ?? {});
+      console.log("[BLE Hook] Device selected:", info);
       setDeviceInfoLocal(info);
       setStatusLocal("connecting");
       const onDisconnect = () => {
+        console.log("[BLE Hook] Device disconnected");
         setStatusLocal("idle");
         setDeviceInfoLocal(null);
       };
       await connectToDevice(info, onDisconnect);
+      console.log("[BLE Hook] Connected successfully");
       setStatusLocal("connected");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Connection failed";
-      if (message.includes("canceled") || message.includes("User cancelled") || message.includes("cancel")) {
+      console.error("[BLE Hook] Pairing error:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      if (message.includes("canceled") || message.includes("User cancelled") || message.includes("cancel") || message.includes("user canceled")) {
         setStatusLocal("idle");
         setError(null);
       } else {

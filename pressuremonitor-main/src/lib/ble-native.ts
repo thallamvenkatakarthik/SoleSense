@@ -20,11 +20,26 @@ export type RequestDeviceOptions = {
 };
 
 let initialized = false;
+let initializationPromise: Promise<void> | null = null;
 
 async function ensureInitialized(): Promise<void> {
   if (initialized) return;
-  await BleClient.initialize({ androidNeverForLocation: true });
-  initialized = true;
+  if (initializationPromise) return initializationPromise;
+  
+  initializationPromise = (async () => {
+    try {
+      await BleClient.initialize({ androidNeverForLocation: true });
+      initialized = true;
+      console.log("[BLE] Capacitor BLE initialized successfully");
+    } catch (error) {
+      console.error("[BLE] Failed to initialize Capacitor BLE:", error);
+      initialized = false;
+      initializationPromise = null;
+      throw error;
+    }
+  })();
+  
+  return initializationPromise;
 }
 
 export function isBLEAvailable(): boolean {
@@ -34,27 +49,37 @@ export function isBLEAvailable(): boolean {
 export async function getBLEAvailability(): Promise<boolean> {
   try {
     await ensureInitialized();
-    return await BleClient.isEnabled();
-  } catch {
+    const enabled = await BleClient.isEnabled();
+    console.log("[BLE] Bluetooth enabled:", enabled);
+    return enabled;
+  } catch (error) {
+    console.error("[BLE] Error checking availability:", error);
     return false;
   }
 }
 
 export async function requestDevice(options: RequestDeviceOptions = {}): Promise<BLEDeviceInfoNative> {
-  await ensureInitialized();
-  const { namePrefix = DEFAULT_DEVICE_NAME_PREFIX, optionalServices = [BATTERY_SERVICE, GENERIC_ACCESS] } = options;
-  const requestOptions: { namePrefix?: string; optionalServices?: string[]; services?: string[] } = {
-    optionalServices,
-  };
-  if (namePrefix) {
-    requestOptions.namePrefix = namePrefix;
+  try {
+    await ensureInitialized();
+    const { namePrefix = DEFAULT_DEVICE_NAME_PREFIX, optionalServices = [BATTERY_SERVICE, GENERIC_ACCESS] } = options;
+    const requestOptions: { namePrefix?: string; optionalServices?: string[]; services?: string[] } = {
+      optionalServices,
+    };
+    if (namePrefix) {
+      requestOptions.namePrefix = namePrefix;
+    }
+    console.log("[BLE] Requesting device with options:", requestOptions);
+    const device = await BleClient.requestDevice(requestOptions);
+    console.log("[BLE] Device selected:", device.deviceId, device.name);
+    return {
+      id: device.deviceId,
+      name: device.name ?? "Unknown Device",
+      nativeDeviceId: device.deviceId,
+    };
+  } catch (error) {
+    console.error("[BLE] Error requesting device:", error);
+    throw error;
   }
-  const device = await BleClient.requestDevice(requestOptions);
-  return {
-    id: device.deviceId,
-    name: device.name ?? "Unknown Device",
-    nativeDeviceId: device.deviceId,
-  };
 }
 
 export async function connectToDevice(
